@@ -198,3 +198,4 @@ pyrightconfig.json
 *.db
 *.tar
 *test*
+*.erd
