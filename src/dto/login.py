@@ -6,6 +6,6 @@ class LoginRequest(BaseModel):
     password: str | None = None
 
 class LoginResponse(BaseModel):
-    status: str
+    status: int
     msg: str | None = None
     token: str | None = None
