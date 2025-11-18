@@ -32,16 +32,16 @@ responses = {
 def login(user: LoginRequest, response: Response) -> LoginResponse:
 
     # Verify User Credential
-    http_status, message = LoginService(user.username, user.password).verify()
+    http_status, message, token = LoginService(user.username, user.password).verify()
 
     if http_status == 401:
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return LoginResponse(
             status=http_status, 
             msg=message, 
-            token=None)
+            token=token)
     else:
         return LoginResponse(
             status=http_status, 
             msg=message, 
-            token="token")
+            token=token)

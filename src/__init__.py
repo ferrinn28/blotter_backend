@@ -1,6 +1,10 @@
 from .app import app
 
 import logging, logging.config
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 LOG_CONFIG = {
     "version": 1,
