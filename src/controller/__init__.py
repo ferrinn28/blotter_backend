@@ -1,2 +1,2 @@
-from .health import Health
+from .health_controller import HealthController
 from .login_controller import LoginController

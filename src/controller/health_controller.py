@@ -2,10 +2,10 @@ import logging
 
 from fastapi import APIRouter
 
-Health = APIRouter()
+HealthController = APIRouter()
 
-@Health.get("/health")
-def hello_world():
+@HealthController.get("/health")
+def health():
     logging.info("Health Check")
     return {
         "status": "OK",
