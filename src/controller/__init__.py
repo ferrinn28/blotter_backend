@@ -1,2 +1,3 @@
 from .health_controller import HealthController
 from .login_controller import LoginController
+from .currencypair_controller import CurrencyPairController
