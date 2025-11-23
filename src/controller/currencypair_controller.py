@@ -1,57 +1,13 @@
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, Response, status
 from src.service import CurrencyPairService
 from src.dto import CurrencyPairResponse
+from src.openapi_config import response_currencypair_controller_get
 
 
 CurrencyPairController = APIRouter(tags=["Currency Pairs"])
 
-# OpenAPI Swagger Additional Responses
-responses = {
-    200: {"model": CurrencyPairResponse,
-          "description": "Success Query Registered Currency Pairs",
-          "content": {
-                "application/json": {
-                    "example": {"status": 200, 
-                                "msg": "OK", 
-                                "currency_pairs": [
-                                                    {
-                                                        "name": "USD/IDR",
-                                                        "base_currency": "USD",
-                                                        "base_desc": "United States Dollar",
-                                                        "quote_currency": "IDR",
-                                                        "quote_desc": "Indonesia Rupiah"
-                                                    },
-                                                    {
-                                                        "name": "AUD/USD",
-                                                        "base_currency": "AUD",
-                                                        "base_desc": "Australia Dollar",
-                                                        "quote_currency": "USD",
-                                                        "quote_desc": "United States Dollar"
-                                                    }]}
-                }}
-        },
 
-    400: {"model": CurrencyPairResponse,
-          "description": "Wrong Currency Pair Format",
-          "content": {
-                "application/json": {
-                    "example": {"status": 400, 
-                                "msg": "Invalid currency pair code format. Expected 6 characters (e.g., 'usdidr').", 
-                                "currency_pairs": "null"}
-                }}
-        },
-
-    404: {"model": CurrencyPairResponse,
-          "description": "Currency Pair Not Found",
-          "content": {
-                "application/json": {
-                    "example": {"status": 404, "msg": "NOT FOUND", "currency_pairs": "null"}
-                }}
-        }
-}
-
-
-@CurrencyPairController.get("/currencypair/{currency_pair}", status_code=200, responses={**responses})
+@CurrencyPairController.get("/currencypair/{currency_pair}", status_code=200, responses={**response_currencypair_controller_get})
 def currencypair(currency_pair:str, response: Response) -> CurrencyPairResponse :
     
     if currency_pair == "all":
@@ -64,7 +20,7 @@ def currencypair(currency_pair:str, response: Response) -> CurrencyPairResponse 
             response.status_code = status.HTTP_400_BAD_REQUEST
             return CurrencyPairResponse(
                 status=400,
-                msg="Invalid currency pair code format. Expected 6 characters (e.g., 'usdidr').",
+                msg="Invalid currency pair code format. Expected 6 characters (e.g., 'usdidr')",
                 currency_pairs=None
             )
             
