@@ -1,1 +1,1 @@
-from .currencypair_openapi import response_currencypair_controller_get
+from .currencypair_openapi import response_currencypair_controller_get, response_currencypair_controller_post

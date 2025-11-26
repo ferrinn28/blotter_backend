@@ -1,11 +1,15 @@
+import logging
+
 from sqlmodel import Session, select
 from typing import List, Tuple
-from src.model import TCurrencyPair
+from src.model import TCurrencyPair, TCurrency
 from src.dto import CurrencyPairData
 from .database import engine 
 
 
 class TCurrencyPairRepo:
+    def __init__(self):
+        self.log = logging.getLogger(self.__class__.__name__)
     
     def get_all_pairs_with_names(self) -> Tuple[List[CurrencyPairData], int, str]:
         """
@@ -62,4 +66,45 @@ class TCurrencyPairRepo:
                 status_code = 404
                 msg = "NOT FOUND"
 
+                self.log.warning(f"Currency pair {currency_pair} is not found in DB")
+
                 return data, status_code, msg
+            
+    def post_currency_pair(self, base_currency:str, quote_currency:str) -> Tuple[List[CurrencyPairData], int, str]:
+        """
+        Adding New Currency Pair into DB
+        """
+        with Session(engine) as session:
+            # 1. SELECT statement on the TCurrency WHERE code is equal with base_currency and quote currency
+            statement_base_currency = select(TCurrency).where(TCurrency.code == base_currency)
+
+            statement_quote_currency = select(TCurrency).where(TCurrency.code == quote_currency)
+
+            # 2. Execute and fetch results
+            results_base_currency = session.exec(statement_base_currency).first()
+            results_quote_currency = session.exec(statement_quote_currency).first()
+
+
+            # 3. Add TCurrencyPair
+            new_currency_pair = TCurrencyPair(
+                currency_pair=f"{base_currency}/{quote_currency}",
+                base_currency=results_base_currency,
+                quote_currency=results_quote_currency
+
+            )
+
+            session.add(new_currency_pair)
+            session.commit()
+
+            self.log.info(f"Currency pair {base_currency}/{quote_currency} is already added into DB")
+
+            session.refresh(new_currency_pair)
+            data = [CurrencyPairData(name=new_currency_pair.currency_pair,
+                                        base_currency=new_currency_pair.base_currency.code,
+                                        base_desc=new_currency_pair.base_currency.description,
+                                        quote_currency=new_currency_pair.quote_currency.code,
+                                        quote_desc=new_currency_pair.quote_currency.description)]
+            status_code = 201
+            msg = "ADDED"
+
+            return data, status_code, msg

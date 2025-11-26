@@ -13,3 +13,6 @@ class CurrencyPairResponse(BaseModel):
     status: int
     msg: str
     currency_pairs: List[CurrencyPairData] | None
+
+class CurrencyPairRequest(BaseModel):
+    currency_pair: str
