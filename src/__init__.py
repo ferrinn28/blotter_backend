@@ -11,7 +11,7 @@ LOG_CONFIG = {
     "disable_existing_loggers": True,
     "formatters": {
         "default": {
-            "format": "%(asctime)s [%(process)s] %(levelname)s: %(message)s",
+            "format": "%(asctime)s [%(process)s] [%(name)-20s] %(levelname)-8s: %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S",  # Added date format
         }
     },
