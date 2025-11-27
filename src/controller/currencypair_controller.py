@@ -9,7 +9,7 @@ msg_400 = "Invalid currency pair code format. Expected 6 characters (e.g., 'usdi
 
 
 @CurrencyPairController.get("/currencypair/{currency_pair}", status_code=200, responses={**response_currencypair_controller_get})
-def currencypair(currency_pair:str, response: Response) -> CurrencyPairResponse :
+def query_currency_pair(currency_pair:str, response: Response) -> CurrencyPairResponse :
     
     if currency_pair == "all":
         data, status_code, msg = CurrencyPairService().all()
@@ -40,7 +40,7 @@ def currencypair(currency_pair:str, response: Response) -> CurrencyPairResponse 
 
 
 @CurrencyPairController.post("/currencypair", responses={**response_currencypair_controller_post})
-def post_currency_pair(data: CurrencyPairRequest, response: Response) -> CurrencyPairResponse:
+def add_currency_pair(data: CurrencyPairRequest, response: Response) -> CurrencyPairResponse:
 
     # Based on ISO 4217 base and quote currency have 3 letters
     # example: EURUSD, GBPUSD, etc
