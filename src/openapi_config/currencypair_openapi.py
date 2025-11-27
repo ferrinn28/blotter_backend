@@ -95,3 +95,44 @@ response_currencypair_controller_post = {
                 }}
         }
 }
+
+
+
+response_currencypair_controller_delete = {
+    200: {"model": CurrencyPairResponse,
+          "description": "Success Delete Currency Pair",
+          "content": {
+                "application/json": {
+                    "example": {"status": 200, 
+                                "msg": "DELETED", 
+                                "currency_pairs": [
+                                                   {
+                                                        "name": "NZD/JPY",
+                                                        "base_currency": "NZD",
+                                                        "base_desc": "New Zealand Dollar",
+                                                        "quote_currency": "JPY",
+                                                        "quote_desc": "Japan Yen"
+                                                    }]}
+                }}
+        },
+
+    400: {"model": CurrencyPairResponse,
+          "description": "Wrong Currency Pair Format",
+          "content": {
+                "application/json": {
+                    "example": {"status": 400, 
+                                "msg": "Invalid currency pair code format. Expected 6 characters (e.g., 'usdidr')", 
+                                "currency_pairs": "null"}
+                }}
+        },
+
+    404: {"model": CurrencyPairResponse,
+          "description": "Currency Pair Not Found",
+          "content": {
+                "application/json": {
+                    "example": {"status": 404, 
+                                "msg": "NOT FOUND", 
+                                "currency_pairs": "null"}
+                }}
+        }
+}

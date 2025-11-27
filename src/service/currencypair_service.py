@@ -38,4 +38,22 @@ class CurrencyPairService:
             status_code = 200
             msg = "Already Exist in DB"
             return data, status_code, msg
+        
+    def delete(self, base_currency:str, quote_currency:str) -> Tuple[List[TCurrencyPair], int, str]:
+        currency_pair = f"{base_currency}/{quote_currency}"
+        self.log.info(f"Deleting {currency_pair} into DB")
+
+        # Checking Currency Pair is already exist or not
+        data, _, _ = TCurrencyPairRepo().get_specific_pairs_with_names(currency_pair)
+
+        if data != None:
+            output, status_code, msg = TCurrencyPairRepo().delete_currency_pair(base_currency, quote_currency)
+            self.log.info(f"Currency Pair {currency_pair} success deleted")
+            return output, status_code, msg
+        
+        else:
+            self.log.warning(f"Can't Delete Currency Pair {currency_pair} becasue Can't be found in DB")
+            status_code = 400
+            msg = "NOT FOUND"
+            return data, status_code, msg
 
