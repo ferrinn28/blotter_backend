@@ -10,6 +10,8 @@ from src.repository import TUserRepo
 
 class LoginService():
     def __init__(self, username:str, password:str):
+        self.log = logging.getLogger(self.__class__.__name__)
+
         self.username= username
         self.password= password.encode("utf-8")
     
@@ -48,13 +50,13 @@ class LoginService():
             # Use checkpw() to compare the entered password to the stored hash
             # checkpw() automatically extracts the salt from the stored_hash and performs the comparison.
             if bcrypt.checkpw(self.password, stored_hash):
-                logging.info(f"USER {self.username} SUCCESS LOGIN")
+                self.log.info(f"USER {self.username} SUCCESS LOGIN")
                 jwt_token = jwt.encode(payload, os.getenv("SECRET"))
                 return (200, "Login Success", jwt_token)
             else:
-                logging.warning(f"USER {self.username} FAILED LOGIN")
+                self.log.warning(f"USER {self.username} FAILED LOGIN")
                 return (401, "Wrong username or password", None)
 
         else:
-            logging.warning(f"USER {self.username} is NOT FOUND")
+            self.log.warning(f"USER {self.username} is NOT FOUND")
             return (401, "Wrong username or password", None)

@@ -1,34 +1,14 @@
-import logging
-
 from fastapi import APIRouter, Response, status
 
 from src.dto import LoginRequest, LoginResponse
 from src.service import LoginService
+from src.openapi_config import response_login_controller
 
 
-LoginController = APIRouter()
-
-# OpenAPI Swagger Additional Responses
-responses = {
-    200: {"model": LoginResponse,
-          "description": "Login Success",
-          "content": {
-                "application/json": {
-                    "example": {"status": 200, "msg": "Login Success", "token": "PLACEHOLDER_JWT_TOKEN"}
-                }}
-        },
-
-    404: {"model": LoginResponse,
-          "description": "Login Failed",
-          "content": {
-                "application/json": {
-                    "example": {"status": 404, "msg": "Wrong username or password", "token": "null"}
-                }}
-        }
-}
+LoginController = APIRouter(tags=["Login"])
 
 
-@LoginController.post("/login", status_code=200, responses={**responses})
+@LoginController.post("/login", status_code=200, responses={**response_login_controller})
 def login(user: LoginRequest, response: Response) -> LoginResponse:
 
     # Verify User Credential
