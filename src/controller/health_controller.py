@@ -1,13 +1,19 @@
 import logging
 
 from fastapi import APIRouter
+from src.dto import HealthCheckResponse
 
-HealthController = APIRouter()
+
+HealthController = APIRouter(tags=["Health Check"])
 
 @HealthController.get("/health")
-def health():
-    logging.info("Health Check")
-    return {
-        "status": "OK",
-        "msg": "Application is ready"
-        }
+def health() -> HealthCheckResponse:
+    LOG_NAME = "HealthController" 
+    logger = logging.getLogger(LOG_NAME)
+    
+    logger.info("Health Check")
+
+    return HealthCheckResponse(
+        status= "OK",
+        msg= "Application is ready"
+    )
