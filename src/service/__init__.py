@@ -1,2 +1,2 @@
-from .login import LoginService
+from .login_service import LoginService
 from .currencypair_service import CurrencyPairService
