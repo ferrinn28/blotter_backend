@@ -17,3 +17,8 @@ class TCurrency(SQLModel, table=True):
         back_populates="quote_currency",
         sa_relationship_kwargs={"foreign_keys": "TCurrencyPair.quote_id"}
     )
+
+    portfolio_currency: List["TPortfolio"] = Relationship(
+        back_populates="currency_portfolio",
+        sa_relationship_kwargs={"foreign_keys": "TPortfolio.currency_id"}
+    )

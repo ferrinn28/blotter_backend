@@ -1,2 +1,3 @@
 from .login_service import LoginService
 from .currencypair_service import CurrencyPairService
+from .portfolio_service import PortfolioService
